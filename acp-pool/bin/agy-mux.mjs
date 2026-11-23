@@ -13,9 +13,7 @@ import { pickAccount, withCooldown, getCooldown } from '../lib/account-router.mj
 // ───────────────────────── 常量 ─────────────────────────
 import { homedir } from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
-import { join as joinPath } from 'node:path';
-const AGY_BIN = process.env.AGY_MUX_AGY_BIN || joinPath(homedir(), '.local/bin/agy');
+const AGY_BIN = process.env.AGY_MUX_AGY_BIN || join(homedir(), '.local/bin/agy');
 let MODEL_GROUP = null; // 由 argv 的 --model 决定，见下方 parseArgs 之后
 const COOLDOWN_MS = 300_000;
 const QUOTA_TTL_MS = 60_000;

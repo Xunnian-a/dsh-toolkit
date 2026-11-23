@@ -1,0 +1,14 @@
+# 示例配置：dsh-jev-supervisor 需要本地有 jev-supervisor 后端（本仓库不含）。
+# dsh-jev-supervisor: 把 jev-supervisor 的 CLI 注册成 DSH 工具。
+# workspace 默认指向本地后端 MVP；允许的仓库根目录默认只放行 /path/to/your/workspace。
+- insert:
+    - id: dsh-jev-supervisor
+      name: 'dsh-jev-supervisor'
+      config:
+        workspace: /path/to/jev-supervisor
+        python: python3
+        allowedRoots:
+          - /path/to/your/workspace
+        timeoutSec: 420
+        maxTimeoutSec: 1200
+        dshProfile: headless

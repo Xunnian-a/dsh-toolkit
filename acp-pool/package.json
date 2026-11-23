@@ -1,0 +1,22 @@
+{
+  "name": "dsh-acp-pool",
+  "version": "0.1.0",
+  "description": "Runtime-register multiple ACP subagent providers (one per model) and their tools, without editing the profile per model.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "keywords": ["dsh", "dsh-plugin", "acp", "antigravity", "subagent"],
+  "license": "MIT"
+}

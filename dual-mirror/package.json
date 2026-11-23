@@ -1,0 +1,22 @@
+{
+  "name": "dsh-dual-mirror",
+  "description": "Record a DSH <-> external-agent dialog as a browsable one-shot child session; the parent only receives a subagent/catalog card.",
+  "version": "0.3.3",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  },
+  "scripts": {
+    "verify": "node test/verify.mjs",
+    "sessions": "node scripts/mirror-sessions.mjs"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "dsh-jev-supervisor",
+  "version": "0.1.0",
+  "description": "DSH bundle: exposes the jev-supervisor (Jev + Antigravity + DSH) orchestrator as agent tools — quota, route, plan, run.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
+    "./package.json": "./package.json",
+    "./client": "./lib/client.js"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  },
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "jev",
+    "antigravity",
+    "supervisor"
+  ],
+  "license": "MIT"
+}

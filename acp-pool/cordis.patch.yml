@@ -1,0 +1,43 @@
+# 示例配置：把路径换成你自己的，再按 dsh-acp-pool/README.md 的方式装进 DSH。
+# 注意：providers 里只写模型名；落到哪个账号由 agy-mux 按额度决定。
+# dsh-acp-pool：一个模型一个 ACP provider；acp_delegate 按任务类型 + 额度自动选模型。
+# 2026-11-22：命令换成 agy-mux —— 账号路由下沉到 mux 内部（provider 只按模型划分）。
+- insert:
+    - id: dsh-acp-pool
+      name: 'dsh-acp-pool'
+      config:
+        profileDir: /path/to/your/dsh/profile
+        command: /path/to/dsh-toolkit/acp-pool/bin/agy-mux.mjs
+        permission: allow
+        acpArgs: ['--sandbox']
+        # 2026-11-22 评测：Jev 的入口路由判断 15 任务准确率 53%（等同随机），
+        # 低置信区(<0.7)准确率仅 25%，且会把本地任务也判成该外包（精确率 50%）。
+        # 入口路由改由主控按规则表决定，Jev 不参与派单门禁。
+        # 它在「冲突分诊/完成度判定」等节点判断上的价值另行以影子模式验证。
+        gate: 'off'
+        gateConfidence: 0.5
+        # ⚠ quota.enabled 必须 false：jev-supervisor 的 quota.py 只查主脑1 的额度，
+        #   若在这里判可用性，主脑1 Claude 耗尽时会把整个 claude 组判死，
+        #   mux 明明还能用主脑2。账号级额度判断已由 agy-mux 自己负责。
+        quota:
+          enabled: false
+          workspace: /path/to/jev-supervisor
+          python: python3
+          ttlSec: 600
+          timeoutSec: 25
+        providers:
+          # provider 只表达「用哪个模型」，落到哪个账号由 agy-mux 按额度现算
+          - name: acp-claude-opus
+            model: claude-opus-5-5-high
+            group: claude
+          - name: acp-claude-sonnet
+            model: claude-sonnet-5-5-high
+            group: claude
+          - name: acp-gemini
+            model: gemini-4-neon-high
+            group: gemini
+          # 只读审查：显式指定才用，auto 选择会跳过 reject provider
+          - name: acp-gemini-review
+            model: gemini-3.8-flash-high
+            group: gemini
+            permission: reject

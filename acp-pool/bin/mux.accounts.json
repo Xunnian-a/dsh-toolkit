@@ -1,0 +1,12 @@
+[
+  {
+    "id": "main",
+    "home": "/root",
+    "label": "account-a"
+  },
+  {
+    "id": "second",
+    "home": "/home/your-second-account",
+    "label": "account-b"
+  }
+]

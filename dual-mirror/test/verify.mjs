@@ -14,20 +14,43 @@
  */
 import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync, existsSync } from 'node:fs'
 import { tmpdir } from 'node:os'
-import { join } from 'node:path'
+import { join, dirname } from 'node:path'
 
 const TMP = mkdtempSync(join(tmpdir(), 'dsh-mirror-test-'))
 process.env.DSH_HOME = TMP
 
-const DSH_INSTALL = process.env.DSH_INSTALL_ROOT || '/usr/local/lib/node_modules/@deepseek-ai/dsh'
-const { Session } = await import(`${DSH_INSTALL}/node_modules/@deepseek-ai/dsh-session/lib/index.js`)
+const { resolveDshRoot } = await import('../lib/adapter.js')
+
+// 解析本机的 DSH 安装：环境变量 → 从 argv 向上找 → node 自身的全局目录 → 常见路径。
+// 找不到就跳过依赖 DSH 的用例，让纯逻辑用例仍可跑（换机器/CI 时不至于整片红）。
+async function loadSession() {
+  const candidates = [
+    process.env.DSH_INSTALL_ROOT,
+    (() => { try { return resolveDshRoot() } catch { return undefined } })(),
+    join(dirname(process.execPath), '..', 'lib', 'node_modules', '@deepseek-ai', 'dsh'),
+    '/usr/local/lib/node_modules/@deepseek-ai/dsh',
+  ].filter(Boolean)
+  for (const root of candidates) {
+    try {
+      const mod = await import(`${root}/node_modules/@deepseek-ai/dsh-session/lib/index.js`)
+      if (mod?.Session) return { Session: mod.Session, root }
+    } catch { /* 试下一个 */ }
+  }
+  return undefined
+}
+const loaded = await loadSession()
+if (!loaded) {
+  console.log('跳过：本机没有可用的 DSH 安装（可用 DSH_INSTALL_ROOT 指定路径）')
+  process.exit(0)
+}
+const { Session } = loaded
 const {
   buildMirrorSession, normalizeArgs, parseTranscript, sanitizeText, redactSecrets,
   dialogHash, DEFAULT_SPEAKERS,
 } = await import('../lib/mirror.js')
 const { writeMirrorSession, exportMarkdown, avatarsAvailable, readAvatarRefs, readIndex, webpSize } = await import('../lib/store.js')
 const { apply } = await import('../lib/index.js')
-const { compareVersions, resolveDshRoot } = await import('../lib/adapter.js')
+const { compareVersions } = await import('../lib/adapter.js')
 
 let failures = 0
 let total = 0

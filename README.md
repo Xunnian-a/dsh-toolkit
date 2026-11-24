@@ -39,10 +39,10 @@ node --test test/*.test.mjs          # acp-pool 23 项 / jev-supervisor 25 项
 
 ## 已知限制
 
-- `jev-supervisor/` 的 e2e 用例需要本地有 `jev-supervisor` 后端（本仓库不含），clone 后可能失败；
-- `dual-mirror` 的离线校验里有两条用例读本机 `~/.dsh` 的头像附件，换机器要改路径或跳过；
-- `adb-autopair` 的 UI 文案与流程是按 DSHA + OriginOS 写的，配对页的进入步骤可能仍需人工确认一次；
-- 三个插件都假设你已经在用 DSH 的 cordis 插件机制。
+- `jev-supervisor/` 的 e2e 需要本地有后端（本仓库不含）；缺失时**自动跳过**并打一行提示。
+- `dual-mirror` 的校验需要本机装有 DSH：解析顺序为 `DSH_INSTALL_ROOT` → 从 argv 向上找 → node 全局目录 → 常见路径；都找不到时**整段跳过**。头像用例在 `~/.dsh` 不存在时也会跳过。
+- `adb-autopair` 的 UI 文案与流程是按 DSHA + OriginOS 写的，换 ROM 可能要改常量；配对页仍需人工确认一次。
+- 三个插件都假设你已经在用 DSH 的 cordis 插件机制，且**不保证兼容所有 DSH 版本**（开发时基于 0.2.x）。
 
 ## 为什么要做这些
 

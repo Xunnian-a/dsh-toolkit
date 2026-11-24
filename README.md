@@ -15,6 +15,10 @@
 | [`jev-supervisor/`](jev-supervisor/) | DSH 插件：把 `jev-supervisor` CLI 封成 5 个会话内工具（**需自备后端**，本仓库不含） | 25 项 |
 | [`adb-autopair/`](adb-autopair/) | 无线 ADB 授权掉线后自动重新配对（依赖 DSHA 的 `/app/ui` 桥） | 手动 `--check` |
 
+## 看一眼输出
+
+不想先装？[`examples/sample-export.md`](examples/sample-export.md) 是插件真实导出的样子（由 `renderMarkdownExport` 生成，不是手写）。
+
 ## 状态
 
 个人自用，长期跑在一台 vivo / Android 16 手机上。**没有**在更多设备、更多 DSH 版本上验证过；接口或 UI 文案一变，可能需要跟着改。

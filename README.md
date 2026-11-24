@@ -1,5 +1,7 @@
 # dsh-toolkit
 
+![ci](https://github.com/Xunnian-a/dsh-toolkit/actions/workflows/ci.yml/badge.svg)
+
 在 **Android 手机**上跑 [DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness)（DSH）的一组自用工具：把双 Agent 对话留档、把多个大模型接成可自动选型的委派池、把任务监督器封进会话、以及在无线调试掉线时自动重新配对。
 
 这些工具都来自同一个约束：**只有一台手机、一个 proot Ubuntu 容器，没有独立服务器**。能在这种环境里跑通的东西，搬到正常机器上只会更容易。
@@ -36,6 +38,12 @@ node --test test/*.test.mjs          # acp-pool 23 项 / jev-supervisor 25 项
 1. 已经跑起来一套 DSH（桌面或手机容器都行）；
 2. 会改 profile 的 `cordis.patch.yml`（每个目录里的 `cordis.patch.yml` 是模板，里面的 `/path/to/...` 要换成你自己的）；
 3. Node.js ≥ 20.11（部分脚本用到 `import.meta.dirname`）。
+
+一键跑全部校验（缺 DSH / 缺后端时对应套件会自动跳过）：
+
+```bash
+./scripts/test-all.sh
+```
 
 ## 已知限制
 
